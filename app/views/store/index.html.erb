@@ -1,0 +1,24 @@
+<% if notice %>  
+<p id="notice"><%= notice %></p>  
+<% end %>  
+<h1>Your Pragmatic Catalog</h1>  
+<% @products.each do |product| %>  
+    <div class="entry">  
+        <%= image_tag(product.image_url) %>  
+        <h3><%= product.title %></h3>  
+        <%= sanitize(product.description) %>
+        <!--
+            这里要指出的是商品属性所用的方法sanitize：它允许安全地添加HTML风格代码，使客户对这一商品属性描述内容更有兴趣
+         -->  
+        <div class="price_line">  
+            <span class="price"><%= number_to_currency(product.price) %></span>
+            <!-- number_to_currency:函数将价格以货币形式展现 --> 
+            <%= button_to 'Add to Cart', line_items_path(:product_id => product),
+             :remote => true %>
+            <!--
+                1)修改视图页面，使用line_items_path指定处理动作的控制器为在线产品控制器，向控制器传入欲加入购物车产品的id :product_id,并且传递实例product
+                2)按钮上加上:remote=>true参数,发送Ajax请求。
+            --> 
+        </div>  
+    </div>  
+<% end %>  
